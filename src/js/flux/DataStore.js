@@ -48,7 +48,7 @@ class DataStore extends EventEmitter {
   _new(item, type) {
     let data = JSON.parse(storage.getItem(type));
     let id = data.nextId;
-    data.nextId = parseInt(data.nextId) + 1;
+    data.nextId = data.nextId + 1;
     item.id = id;
     data.id = item;
     storage.setItem(type, json.stringify(data));

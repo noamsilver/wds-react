@@ -24,7 +24,7 @@ class LocationsList extends Component {
     DataStore.removeChangeListener(this.updateList);
   }
   updateList() {
-    return this.setState({ list: DataStore.getAllLocations()});
+    this.setState({ list: DataStore.getAllLocations()});
   }
   createList() {
     let list = this.state.list;
