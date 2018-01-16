@@ -24,6 +24,7 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div>
+          <Route exact path="/" render={() => <Redirect to="/locations"/>}/>
           <Route path="/" component={Menu}/>
           <Switch>
             <Route path="/locations" component={LocationsList}/>
