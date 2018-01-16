@@ -3,7 +3,7 @@ import ActionTypes from './ActionTypes';
  
 class Actions {
   locationsView() {
-    dispatcher.dispatch({
+    Dispatcher.dispatch({
       actionType: ActionTypes.LOCATIONS_VIEW,
       payload: null
     });
@@ -27,7 +27,7 @@ class Actions {
     });
   }
   categoriesView() {
-    dispatcher.dispatch({
+    Dispatcher.dispatch({
       actionType: ActionTypes.CATEGORIES_VIEW,
       payload: null
     });
