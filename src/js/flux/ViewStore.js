@@ -23,22 +23,22 @@ class ViewStore extends EventEmitter {
 
   // Switches over the action's type when an action is dispatched.
   _registerToActions(action) {
-    const current = getCurrentView()
+    const current = this.getCurrentView();
     switch(action.actionType) {
       case ActionTypes.LOCATIONS_VIEW:
-        _updateView(constants.LOCATIONS, current.item, current.edit);
+        this._updateView(constants.LOCATIONS, current.item, current.edit);
         break;
       case ActionTypes.CATEGORIES_VIEW:
-        _updateView(constants.CATEGORIES, current.item, current.edit);
+        this._updateView(constants.CATEGORIES, current.item, current.edit);
         break;
       case ActionTypes.ITEM_VIEW:
-        _updateView(current.view, true, false);
+        this._updateView(current.view, true, false);
         break;
       case ActionTypes.NEW_ITEM_VIEW:
-        _updateView(current.view, false, true);
+        this._updateView(current.view, false, true);
         break;
       case ActionTypes.CLOSE_ITEM_VIEW:
-        _updateView(current.view, false, false);
+        this._updateView(current.view, false, false);
         break;
     }
   }
