@@ -1,0 +1,4 @@
+export default {
+  CATEGORIES: 'CATEGORIES',
+  LOCATIONS: 'LOCATIONS'
+}
