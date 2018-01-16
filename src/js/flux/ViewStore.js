@@ -11,7 +11,11 @@ class ViewStore extends EventEmitter {
  
   constructor() {
       super();
-      storage.setItem(dataTypes.CURRENT_VIEW, constants.LOCATIONS);
+      storage.setItem(dataTypes.CURRENT_VIEW, JSON.stringify({
+        view: constants.LOCATIONS,
+        item: false,
+        edit: false
+      }));
 
       // Registers action handler with the Dispatcher.
       Dispatcher.register(this._registerToActions.bind(this));
@@ -19,24 +23,38 @@ class ViewStore extends EventEmitter {
 
   // Switches over the action's type when an action is dispatched.
   _registerToActions(action) {
+    const current = getCurrentView()
     switch(action.actionType) {
       case ActionTypes.LOCATIONS_VIEW:
-        _updateView(constants.LOCATIONS);
+        _updateView(constants.LOCATIONS, current.item, current.edit);
         break;
       case ActionTypes.CATEGORIES_VIEW:
-        _updateView(constants.CATEGORIES);
+        _updateView(constants.CATEGORIES, current.item, current.edit);
+        break;
+      case ActionTypes.ITEM_VIEW:
+        _updateView(current.view, true, false);
+        break;
+      case ActionTypes.NEW_ITEM_VIEW:
+        _updateView(current.view, false, true);
+        break;
+      case ActionTypes.CLOSE_ITEM_VIEW:
+        _updateView(current.view, false, false);
         break;
     }
   }
 
-  _updateView(view) {
-    storage.setItem(dataTypes.CURRENT_VIEW, view);
+  _updateView(view, item, edit) {
+    storage.setItem(dataTypes.CURRENT_VIEW, JSON.stringify({
+      view: view,
+      item: item,
+      edit: edit
+    }));
     this.emit(CHANGE);
   }
 
   // Returns the current store's state.
   getCurrentView() {
-    return storage.getItem(dataTypes.CURRENT_VIEW);
+    return JSON.parse(storage.getItem(dataTypes.CURRENT_VIEW));
   }
 
 

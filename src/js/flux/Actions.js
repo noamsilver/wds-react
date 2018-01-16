@@ -50,6 +50,24 @@ class Actions {
       payload: item
     });
   }
+  itemView() {
+    Dispatcher.dispatch({
+      actionType: ActionTypes.ITEM_VIEW,
+      payload: null
+    });
+  }
+  newItemView() {
+    Dispatcher.dispatch({
+      actionType: ActionTypes.NEW_ITEM_VIEW,
+      payload: null
+    });
+  }
+  closeItemView() {
+    Dispatcher.dispatch({
+      actionType: ActionTypes.CLOSE_ITEM_VIEW,
+      payload: null
+    });
+  }
 }
 
 export default new Actions();
