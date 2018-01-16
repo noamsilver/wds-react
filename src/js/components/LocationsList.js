@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Route, Link } from 'react-router-dom';
 import LocationView from './LocationView';
 import DataStore from '../flux/DataStore';
-import '../../styles/locations-list.css';
+import Actions from '../flux/Actions';
+import '../../styles/list.css';
 
 class LocationsList extends Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class LocationsList extends Component {
   }
   componentWillMount() {
     DataStore.addChangeListener(this.updateList);
+    Actions.locationsView();
   }
   componentWillUnmount() {
     DataStore.removeChangeListener(this.updateList);
@@ -25,7 +27,7 @@ class LocationsList extends Component {
     return this.setState({ list: DataStore.getAllLocations()});
   }
   createList() {
-    let list = this.state.list
+    let list = this.state.list;
     list.sort((a, b) => {
       if (a.name && b.name && a.name < b.name) {
         return this.state.sortAsc ? -1: 1;
@@ -37,16 +39,15 @@ class LocationsList extends Component {
     });
     return list.map(value =>
       <Link to={'/locations/' + value.name.toLowerCase()}><div className="row">{value.name}<span className="cat_name">{value.category}</span></div></Link>
-    )
+    );
   }
 
   render() {
     let list = this.createList();
-
     return (
       <div id="locations" className="list">
         <h2>Locations</h2>{/*remove*/}
-        { list.length === 0 ? <div>Click New to add locations</div> : list }
+        { list.length === 0 ? <div>Click New to add a new location</div> : list }
         <Route path="/locations/:name" component={LocationView}/>
       </div>
     );
