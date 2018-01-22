@@ -4,7 +4,7 @@
   "description": "React app test - Welldone Software Solutions",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --open",
+    "start": "webpack-dev-server --open --hot",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack"
   },
