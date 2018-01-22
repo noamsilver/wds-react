@@ -3,9 +3,9 @@ import Dispatcher from './Dispatcher';
 import ActionTypes from './ActionTypes';
  
 const CHANGE = 'CHANGE';
-const storage = window.localStorage
-const dataTypes = {LOCATIONS: 'locations', CATEGORIES: 'categories'}
- 
+const storage = window.localStorage;
+const dataTypes = {LOCATIONS: 'locations', CATEGORIES: 'categories'};
+
 class DataStore extends EventEmitter {
  
   constructor() {
@@ -27,8 +27,8 @@ class DataStore extends EventEmitter {
       case ActionTypes.NEW_LOCATION:
         _new(action.payload, dataTypes.LOCATIONS);
         break;
-      case ActionTypes.UPDATE_LOCATION:
-        _update(action.payload, dataTypes.LOCATIONS);
+      case ActionTypes.EDIT_LOCATION:
+        _edit(action.payload, dataTypes.LOCATIONS);
         break;
       case ActionTypes.REMOVE_LOCATION:
         _remove(action.payload, dataTypes.LOCATIONS);
@@ -36,8 +36,8 @@ class DataStore extends EventEmitter {
       case ActionTypes.NEW_CATEGORY:
         _new(action.payload, dataTypes.CATEGORIES);
         break;
-      case ActionTypes.UPDATE_CATEGORY:
-        _update(action.payload, dataTypes.CATEGORIES);
+      case ActionTypes.EDIT_CATEGORY:
+        _edit(action.payload, dataTypes.CATEGORIES);
         break;
       case ActionTypes.REMOVE_CATEGORY:
         _remove(action.payload, dataTypes.CATEGORIES);
@@ -54,15 +54,15 @@ class DataStore extends EventEmitter {
     storage.setItem(type, json.stringify(data));
     this.emit(CHANGE);
   }
-  _update(item, type) {
+  _edit(item, type) {
     let data = JSON.parse(storage.getItem(type));
     data[item.id] = item;
     storage.setItem(type, json.stringify(data));
     this.emit(CHANGE);
   }
-  _remove(item, type) {
+  _remove(itemId, type) {
     let data = JSON.parse(storage.getItem(type));
-    delete data[item.id];
+    delete data[itemId];
     storage.setItem(type, json.stringify(data));
     this.emit(CHANGE);
   }

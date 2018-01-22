@@ -2,34 +2,20 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Menu from './Menu';
-import LocationsList from './LocationsList';
-import CategoriesList from './CategoriesList';
+import ListView from './ListView';
 import Navigation from './Navigation';
 import constants from '../constants';
 import '../../styles/app.css';
 
 class App extends Component {
-  constructor(props) {
-    super()
-    // this.state = {
-    //   currentList: constants.LOCATIONS
-    // }
-  }
-  // setCurrentList(type) {
-  //   if (type === constants.LOCATIONS || type === constants.CATEGORIES) {
-  //     this.setState({ currentList: type })
-  //   }
-  // }
   render() {
+    let showList = location.pathname.startsWith('/' + constants.LOCATIONS) || location.pathname.startsWith('/' + constants.CATEGORIES);
     return (
       <BrowserRouter>
         <div>
-          <Route exact path="/" render={() => <Redirect to="/locations"/>}/>
+          <Route exact path="/" render={() => <Redirect to={'/' + constants.LOCATIONS}/>}/>
           <Route path="/" component={Menu}/>
-          <Switch>
-            <Route path="/locations" component={LocationsList}/>
-            <Route path="/categories" component={CategoriesList}/>
-          </Switch>
+          {showList ? <Route path="/:view" component={ListView}/> : undefined}
           <Route path="/" component={Navigation}/>
         </div>
     </BrowserRouter>);

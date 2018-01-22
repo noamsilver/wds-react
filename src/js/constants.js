@@ -1,4 +1,7 @@
 export default {
-  CATEGORIES: 'CATEGORIES',
-  LOCATIONS: 'LOCATIONS'
+  CATEGORIES: 'categories',
+  LOCATIONS: 'locations',
+  NEW: 'new',
+  VIEW: 'view',
+  EDIT: 'edit'
 }

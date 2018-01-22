@@ -1,65 +1,48 @@
 import Dispatcher from './Dispatcher';
 import ActionTypes from './ActionTypes';
+import constants from '../constants';
  
 class Actions {
-  locationsView() {
+  newItem(item, type) {
     Dispatcher.dispatch({
-      actionType: ActionTypes.LOCATIONS_VIEW,
+      actionType: type === constants.LOCATIONS ? ActionTypes.NEW_LOCATION : ActionTypes.NEW_CATEGORY,
+      payload: item 
+    });
+  }
+  editItem(item, type) {
+    Dispatcher.dispatch({
+      actionType: type === constants.LOCATIONS ? ActionTypes.EDIT_LOCATION : ActionTypes.EDIT_CATEGORY,
+      payload: item 
+    });
+  }
+  removeItem(itemId, type) {
+    Dispatcher.dispatch({
+      actionType: type === constants.LOCATIONS ? ActionTypes.REMOVE_LOCATION : ActionTypes.REMOVE_CATEGORY,
+      payload: itemId
+    });
+  }
+  changeView(type) {
+    Dispatcher.dispatch({
+      actionType: type === constants.LOCATIONS ? ActionTypes.LOCATIONS_VIEW : ActionTypes.CATEGORIES_VIEW,
       payload: null
     });
   }
-  newLocation(item) {
-    Dispatcher.dispatch({
-      actionType: ActionTypes.NEW_LOCATION,
-      payload: item 
-    });
-  }
-  updateLocation(item) {
-    Dispatcher.dispatch({
-      actionType: ActionTypes.UPDATE_LOCATION,
-      payload: item 
-    });
-  }
-  removeLocation(item) {
-    Dispatcher.dispatch({
-      actionType: ActionTypes.REMOVE_LOCATION,
-      payload: item 
-    });
-  }
-  categoriesView() {
-    Dispatcher.dispatch({
-      actionType: ActionTypes.CATEGORIES_VIEW,
-      payload: null
-    });
-  }
-  newCategory(item) {
-    Dispatcher.dispatch({
-      actionType: ActionTypes.NEW_CATEGORY,
-      payload: item 
-    });
-  }
-  updateCategory(item) {
-    Dispatcher.dispatch({
-      actionType: ActionTypes.UPDATE_CATEGORY,
-      payload: item 
-    });
-  }
-  removeCategory(item) {
-    Dispatcher.dispatch({
-      actionType: ActionTypes.REMOVE_CATEGORY,
-      payload: item
-    });
-  }
-  itemView() {
+  itemView(itemId) {
     Dispatcher.dispatch({
       actionType: ActionTypes.ITEM_VIEW,
-      payload: null
+      payload: itemId
     });
   }
   newItemView() {
     Dispatcher.dispatch({
       actionType: ActionTypes.NEW_ITEM_VIEW,
       payload: null
+    });
+  }
+  editItemView(itemId) {
+    Dispatcher.dispatch({
+      actionType: ActionTypes.EDIT_ITEM_VIEW,
+      payload: itemId 
     });
   }
   closeItemView() {
