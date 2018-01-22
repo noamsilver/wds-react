@@ -63,8 +63,8 @@ class ListView extends Component {
     return (
       <div id={params.view} className="list">
         <h2>{params.view === constants.LOCATIONS ? 'Locations' : 'Categories'}</h2>
-        { list.length === 0 ? <div>Click New to add {params.view === constants.LOCATIONS ? constants.LOCATIONS : constants.CATEGORIES}</div> : list }
-        <Route path="/:view/:action/:item" render={() => <ItemView routeProps={this.props.routeProps}/>}/>
+        { list.length === 0 ? <div>Click New to add {params.view}</div> : list }
+        <Route path="/:view/:action/:item?" component={ItemView}/>
       </div>
     );
   }
