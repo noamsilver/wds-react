@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Link, withRouter } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 import ListItem from './ListItem';
 import ItemView from './ItemView';
 import DataStore from '../flux/DataStore';
@@ -70,4 +70,4 @@ class ListView extends Component {
   }
 }
 
-export default withRouter(ListView);
+export default ListView;

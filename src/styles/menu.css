@@ -1,0 +1,31 @@
+#menu {
+  padding: 20px;
+  -webkit-box-shadow: 0px -34px 100px 28px rgba(0,0,0,0.5);
+  -moz-box-shadow: 0px -34px 100px 28px rgba(0,0,0,0.5);
+  box-shadow: 0px -34px 100px 28px rgba(0,0,0,0.5);
+}
+
+#name {
+  display: inline-block;
+  font-size: 3em;
+}
+
+#actions {
+  display: inline-block;
+  position: relative;
+  bottom: 6px;
+  text-align: center;
+  min-height: 20px;
+}
+
+#menu .close {
+  display: inline-block;
+  position: relative;
+  bottom: 6px;
+}
+
+@media (max-width: 700px) {
+  #name {
+    font-size: 2em;
+  }
+}

@@ -3,6 +3,7 @@ import ViewStore from '../flux/ViewStore';
 import constants from '../constants';
 import Actions from '../flux/Actions';
 import DataStore from '../flux/DataStore';
+import '../../styles/menu.css';
 
 class Menu extends Component {
   constructor(props) {
@@ -19,11 +20,36 @@ class Menu extends Component {
   componentWillMount() {
     ViewStore.addChangeListener(this.updateMenu);
   }
+  componentDidMount() {
+    this.calcWidth();
+    window.addEventListener('resize', this.calcWidth);
+  }
+  componentDidUpdate() {
+    this.calcWidth();
+  }
   componentWillUnmount() {
     ViewStore.removeChangeListener(this.updateMenu);
+    window.removeEventListener('resize', this.calcWidth);
   }
   updateMenu() {
     this.setState({ current: ViewStore.getCurrentView() })
+  }
+  calcWidth() {
+    let menuEl = document.getElementById('menu');
+    let nameEl = document.getElementById('name');
+    let actionsEl = document.getElementById('actions');
+    let closeEl = document.querySelector('#menu .close');
+    let menuCoStyle = window.getComputedStyle ? window.getComputedStyle(menuEl, null) : menuEl.currentStyle;
+    let menuPadding = (parseInt(menuCoStyle.paddingRight) || 0) + (parseInt(menuCoStyle.paddingLeft) || 0);
+    let actionsMarginRight = nameEl.offsetWidth;
+    let newWidth = menuEl.clientWidth - menuPadding - nameEl.offsetWidth - actionsMarginRight;
+    if (!closeEl) {
+      actionsEl.style.width = newWidth + 'px';
+      actionsEl.style.marginRight = actionsMarginRight + 'px';
+    } else {
+      newWidth -= closeEl.offsetWidth + 1;
+      actionsEl.style.width = newWidth + 'px';
+    }
   }
   addNew() {
     this.props.history.push('/' + this.state.current.view + '/' + constants.NEW);
@@ -42,7 +68,7 @@ class Menu extends Component {
   render() {
     const current = this.state.current;
     return (
-      <div>
+      <div id="menu">
         <div id="name">myLocations</div>
         <div id="actions">
           {(current ? !current.item && !current.edit && !current.newItem : undefined) && <button onClick={this.addNew}>New</button>}

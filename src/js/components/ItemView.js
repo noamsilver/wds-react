@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import DataStore from '../flux/DataStore';
-import constants from '../constants';
 import Actions from '../flux/Actions';
-import { withRouter } from 'react-router-dom';
+import constants from '../constants';
+import '../../styles/item.css';
 
 class ItemView extends Component {
   constructor(props) {
@@ -47,4 +47,4 @@ class ItemView extends Component {
   }
 }
 
-export default withRouter(ItemView);
+export default ItemView;
