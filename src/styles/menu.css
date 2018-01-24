@@ -3,29 +3,48 @@
   -webkit-box-shadow: 0px -34px 100px 28px rgba(0,0,0,0.5);
   -moz-box-shadow: 0px -34px 100px 28px rgba(0,0,0,0.5);
   box-shadow: 0px -34px 100px 28px rgba(0,0,0,0.5);
+  height: 95px;
+  box-sizing: border-box;
+  min-width: 475px;
 }
 
 #name {
   display: inline-block;
   font-size: 3em;
+  position: relative;
+  bottom: 13px;
 }
 
 #actions {
   display: inline-block;
   position: relative;
-  bottom: 6px;
+  bottom: 20px;
   text-align: center;
-  min-height: 20px;
+}
+
+#menu .button {
+  display: inline-block;
+  width: 100px;
+  height: 95px;
+  line-height: 95px;
+  background: rgb(96, 118, 238);
+  border-right: 10px solid white;
+  border-left: 10px solid white;
+  color: white;
+  cursor: pointer;
+  text-align: center;
 }
 
 #menu .close {
-  display: inline-block;
+  background: rgb(96, 238, 131);
+  border: 0px;
   position: relative;
-  bottom: 6px;
+  bottom: 20px;
 }
 
 @media (max-width: 700px) {
   #name {
     font-size: 2em;
+    bottom: 17px;
   }
 }

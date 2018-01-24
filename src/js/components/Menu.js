@@ -42,12 +42,12 @@ class Menu extends Component {
     let menuCoStyle = window.getComputedStyle ? window.getComputedStyle(menuEl, null) : menuEl.currentStyle;
     let menuPadding = (parseInt(menuCoStyle.paddingRight) || 0) + (parseInt(menuCoStyle.paddingLeft) || 0);
     let actionsMarginRight = nameEl.offsetWidth;
-    let newWidth = menuEl.clientWidth - menuPadding - nameEl.offsetWidth - actionsMarginRight;
+    let newWidth = menuEl.clientWidth - menuPadding - nameEl.offsetWidth - actionsMarginRight - 1;
     if (!closeEl) {
       actionsEl.style.width = newWidth + 'px';
       actionsEl.style.marginRight = actionsMarginRight + 'px';
     } else {
-      newWidth -= closeEl.offsetWidth + 1;
+      newWidth -= closeEl.offsetWidth;
       actionsEl.style.width = newWidth + 'px';
     }
   }
@@ -71,11 +71,11 @@ class Menu extends Component {
       <div id="menu">
         <div id="name">myLocations</div>
         <div id="actions">
-          {(current ? !current.item && !current.edit && !current.newItem : undefined) && <button onClick={this.addNew}>New</button>}
-          {(current ? current.item : undefined) && <button onClick={this.edit}>Edit</button>}
-          {(current ? current.item : undefined) && <button onClick={this.remove}>Remove</button>}
+          {(current ? !current.item && !current.edit && !current.newItem : undefined) && <div className="button" onClick={this.addNew}>New</div>}
+          {(current ? current.item : undefined) && <div className="button" onClick={this.edit}>Edit</div>}
+          {(current ? current.item : undefined) && <div className="button" onClick={this.remove}>Remove</div>}
         </div>
-        {(current ? current.item || current.edit || current.newItem : undefined) && <div className="close" onClick={this.close}>Close</div>}
+        {(current ? current.item || current.edit || current.newItem : undefined) && <div className="close button" onClick={this.close}>Close</div>}
       </div>
     );
   }
