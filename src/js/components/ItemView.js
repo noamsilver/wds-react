@@ -83,7 +83,6 @@ class ItemView extends Component {
     });
   }
   saveItem(event) {
-    debugger;
     const state = this.state;
     const params = this.props.match.params;
     const isNew = params.action === constants.NEW;
@@ -136,7 +135,6 @@ class ItemView extends Component {
     const isEditItem = params.action === constants.EDIT;
     const isLocation = params.view === constants.LOCATIONS;
     let displayItem = undefined;
-    debugger;
     if (isViewItem) {
       displayItem = 
         <div id="view">
