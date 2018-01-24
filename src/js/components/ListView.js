@@ -27,7 +27,8 @@ class ListView extends Component {
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
-      view: nextProps.match.params.view
+      view: nextProps.match.params.view,
+      list: nextProps.match.params.view === constants.LOCATIONS ? DataStore.getAllLocations() : DataStore.getAllCategories()
     });
   }
   componentWillUpdate(nextProps, nextState) {
@@ -37,7 +38,7 @@ class ListView extends Component {
     DataStore.removeChangeListener(this.updateData);
   }
   updateData() {
-    this.setState({ list: this.params.view === constants.LOCATIONS ? DataStore.getAllLocations() : DataStore.getAllCategories() });
+    this.setState({ list: this.props.match.params.view === constants.LOCATIONS ? DataStore.getAllLocations() : DataStore.getAllCategories() });
   }
   updateView(view) {
     Actions.changeView(view)
@@ -54,7 +55,12 @@ class ListView extends Component {
       return 0;
     });
     return list.map(item =>
-      <ListItem key={item.id} to={'/' + this.params.view + '/view/' + item.id.toLowerCase()} item={item} isLocation={this.params.view === constants.LOCATIONS ? true : false}/>
+      <ListItem
+        key={item.id}
+        to={'/' + this.props.match.params.view + '/view/' + item.id}
+        item={item}
+        isLocation={this.props.match.params.view === constants.LOCATIONS ? true : false}
+      />
     );
   }
   render() {

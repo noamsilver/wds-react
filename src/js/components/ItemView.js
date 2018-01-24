@@ -8,41 +8,184 @@ class ItemView extends Component {
   constructor(props) {
     super(props);
     const params = this.props.match.params;
+    const isNew = params.action === constants.NEW;
+    const isLocation = params.view === constants.LOCATIONS;
+    const item = isNew ? undefined : isLocation ? DataStore.getLocation(params.item) : DataStore.getCategory(params.item);
+    const categories = isLocation && DataStore.getAllCategories();
     this.state = {
-      item: params.action === constants.NEW ? undefined : params.view === constants.LOCATIONS ? DataStore.getLocation(params.item) : DataStore.getCategory(params.item)
+      item,
+      name: item && item.name,
+      address: item && isLocation && item.address,
+      coordinates: item && isLocation && item.coordinates,
+      category: item && isLocation && item.category,
+      categories,
+      message: undefined
     };
     this.updateData = this.updateData.bind(this);
     this.updateView = this.updateView.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.saveItem = this.saveItem.bind(this);
   }
   componentWillMount() {
     DataStore.addChangeListener(this.updateData);
     this.updateView(this.props.match.params);
   }
-  componentWillUpdate(nextProps, nextState) {
+  componentWillReceiveProps(nextProps) {
+    const params = nextProps.match.params;
+    const isNew = params.action === constants.NEW;
+    const isLocation = params.view === constants.LOCATIONS;
+    const item = isNew ? undefined : isLocation ? DataStore.getLocation(params.item) : DataStore.getCategory(params.item);
+    const categories = isLocation && DataStore.getAllCategories();
+    this.setState({
+      item,
+      name: item && item.name,
+      address: item && isLocation && item.address,
+      coordinates: item && isLocation && item.coordinates,
+      category: item && isLocation && item.category,
+      categories,
+      message: undefined
+    });
     this.updateView(nextProps.match.params);
   }
   componentWillUnmount() {
     DataStore.removeChangeListener(this.updateData);
   }
-  updateData() {
-    this.setState({ item: this.params.view === constants.LOCATIONS ? DataStore.getLocation(this.params.item) : DataStore.getCategory(this.params.item) })
-  }
   updateView(params) {
     if (params.action === constants.NEW) {
       Actions.newItemView();
     } else if (params.item) {
-      if (params.action === constants.view) {
+      if (params.action === constants.VIEW) {
         Actions.itemView(params.item);
       } else if (params.action === constants.EDIT) {
         Actions.editItemView(params.item);
       }
     }
   }
+  updateData() {
+    const params = this.props.match.params;
+    const isNew = params.action === constants.NEW;
+    const isLocation = params.view === constants.LOCATIONS;
+    const item = isNew ? undefined : isLocation ? DataStore.getLocation(params.item) : DataStore.getCategory(params.item);
+    const categories = isLocation && DataStore.getAllCategories();
+    this.setState({
+      item,
+      name: item && item.name,
+      address: item && isLocation && item.address,
+      coordinates: item && isLocation && item.coordinates,
+      category: item && isLocation && item.category,
+      categories
+    })
+  }
+  handleChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value,
+      message: undefined
+    });
+  }
+  saveItem(event) {
+    debugger;
+    const state = this.state;
+    const params = this.props.match.params;
+    const isNew = params.action === constants.NEW;
+    const isLocation = params.view === constants.LOCATIONS;
+    let isCompleate = state.name && state.name.length > 0;
+    if (isCompleate && isLocation) {
+      isCompleate =  
+        state.address && state.address.length > 0 && 
+        state.coordinates && state.coordinates.length > 0 && 
+        state.category && state.category.length > 0;
+    }
+    if (isCompleate) {
+      const item = {
+        name: state.name        
+      }
+      if (isLocation) {
+        item.name = state.name;
+        item.address = state.address;
+        item.coordinates = state.coordinates;
+        item.category = state.category;
+      }
+      if (!isNew) {
+        item.id = state.item.id;
+      }
+
+      if (isNew) {
+        if (isLocation)  {
+          Actions.newItem(item, constants.LOCATIONS);
+        } else {
+          Actions.newItem(item, constants.CATEGORIES);
+        }
+      } else {
+        if (isLocation)  {
+          Actions.editItem(item, constants.LOCATIONS);
+        } else {
+          Actions.editItem(item, constants.CATEGORIES);
+        }
+      }
+      this.props.history.push('/' + params.view);
+    } else {
+      this.setState({
+        message: 'Please complete all fields'
+      });
+    }
+  }
   render() {
     const params = this.props.match.params;
-    const newItem = params.action === constants.NEW;
+    const isNewItem = params.action === constants.NEW;
+    const isViewItem = params.action === constants.VIEW;
+    const isEditItem = params.action === constants.EDIT;
+    const isLocation = params.view === constants.LOCATIONS;
+    let displayItem = undefined;
+    debugger;
+    if (isViewItem) {
+      displayItem = 
+        <div id="view">
+          {isLocation && 
+            <div>
+              <div className="address line">Address: {this.state.item.address}</div>
+              <div className="coordinates line">Coordinates: {this.state.item.coordinates}</div>
+              <div className="category line">Category: {this.state.item.category}</div>
+            </div>
+          }
+          {!isLocation && 
+            <div className="name line">Name: {this.state.item.name}</div>
+          }
+        </div>;
+    } else {
+      displayItem = 
+      <div id="edit">
+        <label><div>Name</div>
+          <input type="text" name="name" value={this.state.name} onChange={this.handleChange}/>
+        </label>
+        {isLocation && 
+          <div>
+            <label><div>Address</div>
+              <input type="text" name="address" value={this.state.address} onChange={this.handleChange}/>
+            </label>
+            <label><div>Coordinates</div>
+              <input type="text" name="coordinates" value={this.state.coordinates} onChange={this.handleChange}/>
+            </label>
+            {this.state.categories && this.state.categories.length === 0 && <div>Please create categories before you can add a location</div>}
+            {this.state.categories && this.state.categories.length > 0 && 
+              <label><div>Category</div>
+                <select name="category" value={this.state.category} onChange={this.handleChange}>
+                  <option key="-1"></option>
+                  {this.state.categories.map(item => <option key={item.id} value={item.name}>{item.name}</option>)}
+                </select>
+              </label>
+            }
+          </div>
+        }
+        <div className="save button" onClick={this.saveItem}>Save</div>
+      </div>
+    }
     return (
-      <h3>A {newItem && 'new'} {params.view === constants.LOCATIONS ? 'location' : 'category'}{!newItem && ' - ' + this.state.item.name}</h3>
+      <div id="item">
+        {(isViewItem || isEditItem) && <h2>{isLocation ? this.state.item.name : 'Category'}</h2>}
+        {isNewItem && <h2>New {isLocation ? 'Location' : 'Category'}</h2>}
+        {displayItem}
+        {this.state.message && <div className="message">{this.state.message}</div>}
+      </div>
     );
   }
 }

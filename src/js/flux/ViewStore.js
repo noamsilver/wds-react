@@ -18,9 +18,14 @@ class ViewStore extends EventEmitter {
         newItem: false,
         edit: false
       };
+      this._registerToActions = this._registerToActions.bind(this);
+      this._updateView = this._updateView.bind(this);
+      this.getCurrentView = this.getCurrentView.bind(this);
+      this.addChangeListener = this.addChangeListener.bind(this);
+      this.removeChangeListener = this.removeChangeListener.bind(this);
 
       // Registers action handler with the Dispatcher.
-      Dispatcher.register(this._registerToActions.bind(this));
+      Dispatcher.register(this._registerToActions);
   }
 
   // Switches over the action's type when an action is dispatched.

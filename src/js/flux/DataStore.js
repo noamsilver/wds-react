@@ -16,31 +16,42 @@ class DataStore extends EventEmitter {
           storage.setItem(dataTypes[key], JSON.stringify({ 'nextId': 0 }));
         }
       }
-
+      this._registerToActions = this._registerToActions.bind(this);
+      this._new = this._new.bind(this);
+      this._edit = this._edit.bind(this);
+      this._remove = this._remove.bind(this);
+      this._getAll = this._getAll.bind(this);
+      this._getItem = this._getItem.bind(this);
+      this.getAllCategories = this.getAllCategories.bind(this);
+      this.getAllLocations = this.getAllLocations.bind(this);
+      this.getCategory = this.getCategory.bind(this);
+      this.getLocation = this.getLocation.bind(this);
+      this.addChangeListener = this.addChangeListener.bind(this);
+      this.removeChangeListener = this.removeChangeListener.bind(this);
       // Registers action handler with the Dispatcher.
-      Dispatcher.register(this._registerToActions.bind(this));
+      Dispatcher.register(this._registerToActions);
   }
 
   // Switches over the action's type when an action is dispatched.
   _registerToActions(action) {
     switch(action.actionType) {
       case ActionTypes.NEW_LOCATION:
-        _new(action.payload, dataTypes.LOCATIONS);
+        this._new(action.payload, dataTypes.LOCATIONS);
         break;
       case ActionTypes.EDIT_LOCATION:
-        _edit(action.payload, dataTypes.LOCATIONS);
+        this._edit(action.payload, dataTypes.LOCATIONS);
         break;
       case ActionTypes.REMOVE_LOCATION:
-        _remove(action.payload, dataTypes.LOCATIONS);
+        this._remove(action.payload, dataTypes.LOCATIONS);
         break;
       case ActionTypes.NEW_CATEGORY:
-        _new(action.payload, dataTypes.CATEGORIES);
+        this._new(action.payload, dataTypes.CATEGORIES);
         break;
       case ActionTypes.EDIT_CATEGORY:
-        _edit(action.payload, dataTypes.CATEGORIES);
+        this._edit(action.payload, dataTypes.CATEGORIES);
         break;
       case ActionTypes.REMOVE_CATEGORY:
-        _remove(action.payload, dataTypes.CATEGORIES);
+        this._remove(action.payload, dataTypes.CATEGORIES);
         break;
     }
   }
@@ -50,20 +61,20 @@ class DataStore extends EventEmitter {
     let id = data.nextId;
     data.nextId = data.nextId + 1;
     item.id = id;
-    data.id = item;
-    storage.setItem(type, json.stringify(data));
+    data[id + ''] = item;
+    storage.setItem(type, JSON.stringify(data));
     this.emit(CHANGE);
   }
   _edit(item, type) {
     let data = JSON.parse(storage.getItem(type));
     data[item.id] = item;
-    storage.setItem(type, json.stringify(data));
+    storage.setItem(type, JSON.stringify(data));
     this.emit(CHANGE);
   }
   _remove(itemId, type) {
     let data = JSON.parse(storage.getItem(type));
     delete data[itemId];
-    storage.setItem(type, json.stringify(data));
+    storage.setItem(type, JSON.stringify(data));
     this.emit(CHANGE);
   }
 
