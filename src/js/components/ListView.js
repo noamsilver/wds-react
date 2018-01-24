@@ -54,7 +54,7 @@ class ListView extends Component {
       return 0;
     });
     return list.map(item =>
-      <ListItem to={'/' + this.params.view + '/view/' + item.id.toLowerCase()} item={item} isLocation={this.params.view === constants.LOCATIONS ? true : false}/>
+      <ListItem key={item.id} to={'/' + this.params.view + '/view/' + item.id.toLowerCase()} item={item} isLocation={this.params.view === constants.LOCATIONS ? true : false}/>
     );
   }
   render() {
