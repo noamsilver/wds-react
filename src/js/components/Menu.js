@@ -41,13 +41,22 @@ class Menu extends Component {
     let closeEl = document.querySelector('#menu .close');
     let menuCoStyle = window.getComputedStyle ? window.getComputedStyle(menuEl, null) : menuEl.currentStyle;
     let menuPadding = (parseInt(menuCoStyle.paddingRight) || 0) + (parseInt(menuCoStyle.paddingLeft) || 0);
-    let actionsMarginRight = nameEl.offsetWidth;
-    let newWidth = menuEl.clientWidth - menuPadding - nameEl.offsetWidth - actionsMarginRight - 1;
+    let actionsMargin = 0;
+    let newWidth = menuEl.clientWidth - menuPadding - 1;
     if (!closeEl) {
+      actionsMargin = nameEl.offsetWidth;
+      newWidth -= nameEl.offsetWidth + actionsMargin;
       actionsEl.style.width = newWidth + 'px';
-      actionsEl.style.marginRight = actionsMarginRight + 'px';
+      actionsEl.style.marginRight = actionsMargin + 'px';
     } else {
-      newWidth -= closeEl.offsetWidth;
+      if (nameEl.offsetWidth > closeEl.offsetWidth) {
+        actionsMargin = nameEl.offsetWidth - closeEl.offsetWidth;
+        actionsEl.style.marginRight = actionsMargin + 'px';
+      } else {
+        actionsMargin = closeEl.offsetWidth - nameEl.offsetWidth;
+        actionsEl.style.marginLeft = actionsMargin + 'px';
+      }
+      newWidth -= nameEl.offsetWidth + actionsMargin + closeEl.offsetWidth;
       actionsEl.style.width = newWidth + 'px';
     }
   }
