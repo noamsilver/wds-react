@@ -6,12 +6,14 @@ class ListItem extends Component {
   render() {
     const props = this.props;
     return (
-      <Link to={props.to}>
-        <div className="row">
-          {props.item.name}
-          {props.isLocation && <span className="cat_name">{props.item.category}</span>}
-        </div>
-      </Link>
+      <div className="row">
+        <Link to={props.to}>
+          <div className="fill">
+            {props.item.name}
+            {props.isLocation && <span className="cat-name">{props.item.category}</span>}
+          </div>
+        </Link>
+      </div>
     );
   }
 }
