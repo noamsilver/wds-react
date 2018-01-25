@@ -178,7 +178,7 @@ class ItemView extends Component {
       </div>
     }
     return (
-      <div id="item">
+      <div id="item" className="content">
         {(isViewItem || isEditItem) && <h2>{isLocation ? this.state.item.name : 'Category'}</h2>}
         {isNewItem && <h2>New {isLocation ? 'Location' : 'Category'}</h2>}
         {displayItem}

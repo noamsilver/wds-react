@@ -1,3 +1,14 @@
 body {
   margin: 0;
 }
+
+.content {
+  padding: 2em;
+  min-height: 300px;
+  margin-top: 95px;
+  margin-bottom: 100px;
+}
+
+a, a:link, a:visited, a:hover, a:active {
+  color: inherit;
+}
