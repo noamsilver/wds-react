@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Link } from 'react-router-dom';
 import ListItem from './ListItem';
-import ItemView from './ItemView';
 import DataStore from '../flux/DataStore';
 import Actions from '../flux/Actions';
 import constants from '../constants';
@@ -46,10 +45,10 @@ class ListView extends Component {
   createList() {
     let list = this.state.list;
     list.sort((a, b) => {
-      if (a.name && b.name && a.name < b.name) {
+      if (a.name && b.name && a.name.toLowerCase() < b.name.toLowerCase()) {
         return this.state.sortAsc ? -1: 1;
       }
-      if (a.name && b.name && a.name > b.name) {
+      if (a.name && b.name && a.name.toLowerCase() > b.name.toLowerCase()) {
         return this.state.sortAsc ? 1: -1;
       }
       return 0;
@@ -67,10 +66,9 @@ class ListView extends Component {
     const list = this.createList();
     const params = this.props.match.params;
     return (
-      <div id={params.view} className="list">
+      <div id={params.view} className="list content">
         <h2>{params.view === constants.LOCATIONS ? 'Locations' : 'Categories'}</h2>
         { list.length === 0 ? <div>Click New to add {params.view}</div> : list }
-        <Route path="/:view/:action/:item?" component={ItemView}/>
       </div>
     );
   }
