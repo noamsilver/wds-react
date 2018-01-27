@@ -41,3 +41,8 @@
   border-radius: 5px;
   margin-top: 10px;
 }
+
+#item .message {
+  margin-top: 5px;
+  color: red;
+}
