@@ -140,13 +140,13 @@ class ItemView extends Component {
         <div id="view">
           {isLocation && 
             <div>
-              <div className="address line">Address: {this.state.item.address}</div>
-              <div className="coordinates line">Coordinates: {this.state.item.coordinates}</div>
-              <div className="category line">Category: {this.state.item.category}</div>
+              <div className="address line"><div>Address</div>{this.state.item.address}</div>
+              <div className="coordinates line"><div>Coordinates</div>{this.state.item.coordinates}</div>
+              <div className="category line"><div>Category</div>{this.state.item.category}</div>
             </div>
           }
           {!isLocation && 
-            <div className="name line">Name: {this.state.item.name}</div>
+            <div className="name line"><div>Name</div>{this.state.item.name}</div>
           }
         </div>;
     } else {

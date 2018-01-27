@@ -1,0 +1,43 @@
+#item {
+  padding-left: 15%;
+}
+
+#item .line {
+  margin-top: 5px;
+}
+
+#item .line div {
+  margin-top: 5px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+#item #edit label div {
+  padding-top: 5px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+#item #edit label input, #item #edit label select {
+  margin-top: 2px;
+}
+
+#item #edit label input {
+  border-top: 0px;
+  border-right: 0px;
+  border-left: 0px;
+}
+
+#item #edit label input:focus, #item #edit label select:focus {
+  background-color: rgba(56, 79, 255, 0.05);
+}
+
+#item #edit .save.button {
+  cursor: pointer;
+  width: 200px;
+  height: 50px;
+  background-color: rgb(96, 238, 131);
+  color: white;
+  text-align: center;
+  line-height: 50px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
