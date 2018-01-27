@@ -29,4 +29,5 @@
   top: 8px;
   float: right;
   font-size: 0.7em;
+  z-index: -1;
 }
