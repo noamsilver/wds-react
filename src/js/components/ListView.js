@@ -19,6 +19,9 @@ class ListView extends Component {
     this.createList = this.createList.bind(this);
     this.updateData = this.updateData.bind(this);
     this.updateView = this.updateView.bind(this);
+    this.sortByName = this.sortByName.bind(this);
+    this.changeSortDirection = this.changeSortDirection.bind(this);
+    this.changeGrouping = this.changeGrouping.bind(this);
   }
   componentWillMount() {
     DataStore.addChangeListener(this.updateData);
@@ -42,18 +45,30 @@ class ListView extends Component {
   updateView(view) {
     Actions.changeView(view)
   }
+  changeSortDirection() {
+    this.setState({ sortAsc: !this.state.sortAsc });
+  }
+  changeGrouping() {
+    this.setState({ groupCategories: !this.state.groupCategories });
+  }
   createList() {
-    let list = this.state.list;
-    list.sort((a, b) => {
-      if (a.name && b.name && a.name.toLowerCase() < b.name.toLowerCase()) {
-        return this.state.sortAsc ? -1: 1;
-      }
-      if (a.name && b.name && a.name.toLowerCase() > b.name.toLowerCase()) {
-        return this.state.sortAsc ? 1: -1;
-      }
-      return 0;
-    });
-    return list.map(item =>
+    let newList = this.state.list;
+    if (this.props.match.params.view === constants.LOCATIONS && this.state.groupCategories) {
+      let categoriesList = [];
+      let categoriesSet = new Set(newList.map(item => item.category));
+      let categoriesNames = [];
+      categoriesSet.forEach(item => categoriesNames.push({ name: item }));
+      categoriesNames.sort(this.sortByName);
+      categoriesNames.forEach(category => {
+        let categoryList = newList.filter(item => item.category === category.name);
+        categoryList.length > 1 && categoryList.sort(this.sortByName);
+        categoryList.forEach(item => categoriesList.push(item));
+      });
+      newList = categoriesList;
+    } else {
+      newList.sort(this.sortByName);
+    }
+    return newList.map(item =>
       <ListItem
         key={item.id}
         to={'/' + this.props.match.params.view + '/view/' + item.id}
@@ -62,13 +77,26 @@ class ListView extends Component {
       />
     );
   }
+  sortByName(a, b) {
+    if (a.name && b.name && a.name.toLowerCase() < b.name.toLowerCase()) {
+      return this.state.sortAsc ? -1: 1;
+    }
+    if (a.name && b.name && a.name.toLowerCase() > b.name.toLowerCase()) {
+      return this.state.sortAsc ? 1: -1;
+    }
+    return 0;
+  }
   render() {
-    const list = this.createList();
+    const nextList = this.createList();
     const params = this.props.match.params;
     return (
       <div id={params.view} className="list content">
+        <div className="sort-categories">
+          <div onClick={this.changeSortDirection}><span>Sort</span> {this.state.sortAsc ? 'Asc' : 'Dec'}</div>
+          {params.view === constants.LOCATIONS && <div onClick={this.changeGrouping}><span>Display</span> {this.state.groupCategories ? 'Grouped' : 'Ungrouped'}</div>}
+        </div>
         <h2>{params.view === constants.LOCATIONS ? 'Locations' : 'Categories'}</h2>
-        { list.length === 0 ? <div>Click New to add {params.view}</div> : list }
+        { nextList.length === 0 ? <div>Click New to add {params.view}</div> : nextList }
       </div>
     );
   }
