@@ -27,3 +27,11 @@
 .list .sort-categories div span {
   color: rgba(0, 0, 0, 1);
 }
+
+.list .sort-categories div .filter {
+  cursor: auto;
+}
+
+.list .sort-categories div select {
+  cursor: pointer;
+}

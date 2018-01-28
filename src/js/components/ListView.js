@@ -121,7 +121,7 @@ class ListView extends Component {
           <div onClick={this.changeSortDirection}><span>Sort</span> {this.state.sortAsc ? 'Asc' : 'Dec'}</div>
           {params.view === constants.LOCATIONS && <div onClick={this.changeGrouping}><span>Display</span> {this.state.groupCategories ? 'Grouped' : 'Ungrouped'}</div>}
           {params.view === constants.LOCATIONS && 
-            <div onClick={this.changeFilter}><span>Filter </span> 
+            <div><span className="filter">Filter </span> 
               <select name="filter" value={this.state.filter} onChange={this.changeFilter}>
                 <option key="-1" value="all">All</option>
                 {this.state.currentCategories.map((item, index) => <option key={index} value={item.name}>{item.name}</option>)}
