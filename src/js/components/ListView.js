@@ -20,6 +20,8 @@ class ListView extends Component {
       currentCategories: isLocation ? this.getCurrentCategories(list).sort(this.sortByNameAcs) : undefined,
       list
     };
+    this.initializeVibration();
+    
     this.createList = this.createList.bind(this);
     this.updateData = this.updateData.bind(this);
     this.updateView = this.updateView.bind(this);
@@ -28,6 +30,10 @@ class ListView extends Component {
     this.changeGrouping = this.changeGrouping.bind(this);
     this.changeFilter = this.changeFilter.bind(this);
     this.getCurrentCategories = this.getCurrentCategories.bind(this);
+  }
+  initializeVibration() {
+    // check vibration support
+    navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
   }
   componentWillMount() {
     DataStore.addChangeListener(this.updateData);
@@ -88,7 +94,6 @@ class ListView extends Component {
     return newList.map(item =>
       <ListItem
         key={item.id}
-        to={'/' + this.props.match.params.view + '/view/' + item.id}
         item={item}
         isLocation={this.props.match.params.view === constants.LOCATIONS ? true : false}
       />
