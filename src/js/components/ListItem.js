@@ -13,6 +13,9 @@ class ListItem extends Component {
       navigator.vibrate(500);
     }
   }
+  viewOnMapClick(event) {
+    event.stopPropagation();
+  }
   render() {
     const props = this.props;
     return (
@@ -20,6 +23,7 @@ class ListItem extends Component {
         <Link to={'/' + (props.isLocation ? constants.LOCATIONS : constants.CATEGORIES) + '/view/' + props.item.id} onClick={this.vibrateDevice}>
           <div className="fill">
             {props.item.name}
+            {props.isLocation && <Link to={'/' + (props.isLocation ? constants.LOCATIONS : constants.CATEGORIES) + '/map/' + props.item.id} className="view-on-map" onClick={this.viewOnMapClick}> View on map</Link>}
             {props.isLocation && <span className="cat-name">{props.item.category}</span>}
           </div>
         </Link>

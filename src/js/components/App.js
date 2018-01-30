@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Menu from './Menu';
 import ListView from './ListView';
+import MapView from './MapView';
 import ItemView from './ItemView';
 import Navigation from './Navigation';
 import constants from '../constants';
@@ -17,6 +18,7 @@ class App extends Component {
           <Route path="/" component={Menu}/>
           <Switch>
             <Route exact path="/:view" component={ListView}/>
+            <Route path="/locations/map/:item?" component={MapView}/>
             <Route path="/:view/:action/:item?" component={ItemView}/>
           </Switch>
           <Route path="/" component={Navigation}/>
