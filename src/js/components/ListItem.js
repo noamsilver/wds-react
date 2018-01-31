@@ -1,5 +1,5 @@
 import React, { Component} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import constants from '../constants';
 import '../../styles/list-item.css';
 
@@ -7,6 +7,7 @@ class ListItem extends Component {
   constructor(props) {
     super(props);
     this.vibrateDevice = this.vibrateDevice.bind(this);
+    this.viewOnMapClick = this.viewOnMapClick.bind(this);
   }
   vibrateDevice() {
     if (navigator.vibrate) {
@@ -14,7 +15,9 @@ class ListItem extends Component {
     }
   }
   viewOnMapClick(event) {
+    event.preventDefault();
     event.stopPropagation();
+    this.props.history.push('/' + (this.props.isLocation ? constants.LOCATIONS : constants.CATEGORIES) + '/map/' + this.props.item.id);
   }
   render() {
     const props = this.props;
@@ -23,7 +26,7 @@ class ListItem extends Component {
         <Link to={'/' + (props.isLocation ? constants.LOCATIONS : constants.CATEGORIES) + '/view/' + props.item.id} onClick={this.vibrateDevice}>
           <div className="fill">
             {props.item.name}
-            {props.isLocation && <Link to={'/' + (props.isLocation ? constants.LOCATIONS : constants.CATEGORIES) + '/map/' + props.item.id} className="view-on-map" onClick={this.viewOnMapClick}> View on map</Link>}
+            {props.isLocation && <span className="view-on-map" onClick={this.viewOnMapClick}>View on map</span>}
             {props.isLocation && <span className="cat-name">{props.item.category}</span>}
           </div>
         </Link>
@@ -32,4 +35,4 @@ class ListItem extends Component {
   }
 }
 
-export default ListItem;
+export default withRouter(ListItem);
