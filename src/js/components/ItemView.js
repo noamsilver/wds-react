@@ -16,7 +16,7 @@ class ItemView extends Component {
       item,
       name: item && item.name,
       address: item && isLocation && item.address,
-      coordinates: item && isLocation && item.coordinates,
+      coordinates: item && isLocation && item.coordinates.lat + ', ' + item.coordinates.lng,
       category: item && isLocation && item.category,
       categories,
       message: undefined
@@ -40,7 +40,7 @@ class ItemView extends Component {
       item,
       name: item && item.name,
       address: item && isLocation && item.address,
-      coordinates: item && isLocation && item.coordinates,
+      coordinates: item && isLocation && item.coordinates.lat + ', ' + item.coordinates.lng,
       category: item && isLocation && item.category,
       categories,
       message: undefined
@@ -82,16 +82,26 @@ class ItemView extends Component {
       message: undefined
     });
   }
+  getLatLng(value) {
+    let captureRegex = /(-?\d+\.?\d+)[^0-9-]+(-?\d+\.?\d+)/g;
+    let capture = captureRegex.exec(value);
+    return {
+      lat: capture && capture[1] && parseFloat(capture[1]) >= -90 && parseFloat(capture[1]) <= 90 && parseFloat(capture[1]),
+      lng: capture && capture[2] && parseFloat(capture[2]) >= -180 && parseFloat(capture[2]) <= 180 && parseFloat(capture[2])
+    };
+  }
   saveItem(event) {
     const state = this.state;
     const params = this.props.match.params;
     const isNew = params.action === constants.NEW;
     const isLocation = params.view === constants.LOCATIONS;
     let isCompleate = state.name && state.name.length > 0;
+    let latLng = undefined;
     if (isCompleate && isLocation) {
+      latLng = this.getLatLng(state.coordinates);
       isCompleate =  
         state.address && state.address.length > 0 && 
-        state.coordinates && state.coordinates.length > 0 && 
+        state.coordinates && latLng && latLng.lat && latLng.lng && 
         state.category && state.category.length > 0;
     }
     if (isCompleate) {
@@ -101,7 +111,7 @@ class ItemView extends Component {
       if (isLocation) {
         item.name = state.name;
         item.address = state.address;
-        item.coordinates = state.coordinates;
+        item.coordinates = latLng;
         item.category = state.category;
       }
       if (!isNew) {
@@ -140,13 +150,13 @@ class ItemView extends Component {
         <div id="view">
           {isLocation && 
             <div>
-              <div className="address line"><div>Address</div>{this.state.item.address}</div>
-              <div className="coordinates line"><div>Coordinates</div>{this.state.item.coordinates}</div>
-              <div className="category line"><div>Category</div>{this.state.item.category}</div>
+              <div className="address line"><div>Address</div>{this.state.address}</div>
+              <div className="coordinates line"><div>Coordinates</div>{this.state.coordinates}</div>
+              <div className="category line"><div>Category</div>{this.state.category}</div>
             </div>
           }
           {!isLocation && 
-            <div className="name line"><div>Name</div>{this.state.item.name}</div>
+            <div className="name line"><div>Name</div>{this.state.name}</div>
           }
         </div>;
     } else {
